@@ -1,0 +1,93 @@
+@startuml
+
+class FileSystem {
+  -root: Directory
+  -currentDirectory: Directory
+  +getRoot(): Directory
+  +getCurrentDirectory(): Directory
+  +setCurrentDirectory(Directory): void
+  +execute(String): String
+}
+
+class Directory {
+  -name: String
+  -parent: Directory
+  -children: List<Node>
+  +getName(): String
+  +getParent(): Directory
+  +getChildren(): List<Node>
+  +addChild(Node): void
+  +removeChild(Node): void
+}
+
+class Node {
+  -name: String
+  +getName(): String
+  +getParent(): Directory
+}
+
+class Command {
+  +execute(): String
+}
+
+class ChangeDirectory {
+  -fileSystem: FileSystem
+  -path: String
+  +execute(): String
+}
+
+class ListChildren {
+  -fileSystem: FileSystem
+  -order: String
+  +execute(): String
+}
+
+class Touch {
+  -fileSystem: FileSystem
+  -fileName: String
+  +execute(): String
+}
+
+class File {
+  -name: String
+  -parent: Directory
+  +getName(): String
+  +getParent(): Directory
+}
+
+class MakeDirectory {
+  -fileSystem: FileSystem
+  -dirName: String
+  +execute(): String
+}
+
+class PrintWorkingDirectory {
+  -fileSystem: FileSystem
+  +execute(): String
+}
+
+class Remove {
+  -fileSystem: FileSystem
+  -nodeName: String
+  -recursive: boolean
+  +execute(): String
+}
+
+FileSystem *-- Directory
+Directory *-- Node
+ChangeDirectory -- FileSystem
+ListChildren -- FileSystem
+Touch -- FileSystem
+MakeDirectory -- FileSystem
+PrintWorkingDirectory -- FileSystem
+Remove -- FileSystem
+ChangeDirectory ..|> Command
+ListChildren ..|> Command
+Touch ..|> Command
+MakeDirectory ..|> Command
+PrintWorkingDirectory ..|> Command
+Remove ..|> Command
+Directory --|> Node
+File --|> Node
+
+@enduml
